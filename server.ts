@@ -8,21 +8,23 @@ import {Server} from 'socket.io'
 // request -- socket 
 // api -- event
 // req.body = data
-
+let io:Server | undefined;
 function startServer(){
      connectToDb()
     const port = envConfig.port || 4000
     const server = app.listen(port,()=>{
         console.log(`Server has started at port[${port}]`)
     })
-    const io = new Server(server)
-    io.on("connection",(socket)=>{
-       socket.emit("message",{
-        name : "Manish"
-       })
-        console.log("Someone connected (client)")
-    })
+     io = new Server(server)
     
 }
 
+function getSocketIo(){
+    if(!io){
+        throw new Error("socketio initialized vako xainw hai!")
+    }
+    return io; 
+}
+
 startServer()
+export {getSocketIo}
